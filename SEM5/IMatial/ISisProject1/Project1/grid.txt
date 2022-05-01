@@ -1,0 +1,26 @@
+Customer
+-------------------
+IndexNo ColumnName
+  0        Id
+  1       Name
+  2       Add
+  3       Conno
+  4       Email
+  5        Age
+  6       Gender
+  7        Pid
+  8        Date
+  9        Realtion
+  10        Policy name
+
+Agent 
+-----------------------
+IndexNo ColumnName
+  0      ID
+  1     Name
+  2     Add
+  3      conNo
+  4     Email
+  5     Age
+  6     gender
+  7     quli

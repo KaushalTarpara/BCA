@@ -1,0 +1,13 @@
+Project Title
+Introduction about your Project
+Project Analysis (process to collect information)
+Scope of the Project
+Features of the Project
+Benefits or Limitations of Project
+Database Design (Data Dictionary)
+Entity-Relationship Diagram
+Data Flow Diagram
+Use Case Diagram
+Other Diagrams (such as Algorithm and Flowchart)
+Form or Web Page Layout (Input,  Output, and Calculations on Inputs)
+Report Layout

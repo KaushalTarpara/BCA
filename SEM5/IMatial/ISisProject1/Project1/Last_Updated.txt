@@ -1,0 +1,103 @@
+// string gen;
+           // if (btnradioMale.Checked)
+           // {
+           //     gen = "Male";
+           // }
+           // else
+           // {
+           //     gen = "Female";
+           // }
+           // QRY = "INSERT INTO tbl_CustomerDetails VALUES(";
+           // QRY += "" + txt_CustID .Text+ ",";
+           // QRY += "'"+txt_CustName.Text+"',";
+           // QRY += "'" + txt_ADD .Text+ "',";
+           // QRY += "'" + txt_ContNo.Text + "',";
+           // QRY += "'" + txt_Email.Text + "',";
+           // QRY += "'" + txt_Age.Text + "',";
+           // QRY += "'" + gen + "',";
+           //// QRY += "'" + cmbGender.SelectedItem.ToString() + "',";
+           // QRY += "" + txt_PolicyId.Text + ",";
+           // QRY += "'" + datePic.Value.ToShortDateString() + "',";
+           // QRY += "'" + txt_Relation.Text + "',";
+           // //QRY += "'" + txt_PolicyN.Text + "'";
+           // QRY += "'" + cmbPName.SelectedItem.ToString() + "'";
+           // QRY += ")";
+
+           // CNN = new SqlConnection(cnStr);
+           // CMD = new SqlCommand(QRY,CNN);
+           // CNN.Open();
+           // CMD.ExecuteNonQuery();
+           // CNN.Close();
+           // CNN.Dispose();
+           // CMD.Dispose();
+
+
+           // MessageBox.Show("Insert sucessfully...", "Insert", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+
+
+//int LoadmyMaxId()
+        //{
+        //    int myid = 0;
+        //    QRY = "SELECT MAX(CustomerID) FROM tbl_CustomerDetails";
+        //    CNN = new SqlConnection(cnStr);
+        //    CMD = new SqlCommand(QRY,CNN);
+        //    CNN.Open();
+        //    SqlDataReader DR = CMD.ExecuteReader();
+        //    if(DR.Read())
+        //    {
+        //        myid = int.Parse(DR.GetValue(0).ToString());
+        //    }
+        //    DR.Close();
+        //    CNN.Close();
+        //    CNN.Dispose();
+        //    myid++;
+        //    return myid;
+        //}
+
+void filemygrid(int row)
+        {
+            //txt_CustID.Text = custgrdt.Rows[row].Cells[1].Value.ToString();
+            txt_CustName.Text = custgrdt.Rows[row].Cells[2].Value.ToString();
+            txt_ContNo.Text = custgrdt.Rows[row].Cells[3].Value.ToString();
+            txt_Email.Text = custgrdt.Rows[row].Cells[4].Value.ToString();
+            txt_ADD.Text = custgrdt.Rows[row].Cells[3].Value.ToString();
+            txt_Age.Text = custgrdt.Rows[row].Cells[5].Value.ToString();
+            if (maleradio.Checked)
+            {
+                maleradio.Text = custgrdt.Rows[row].Cells[6].Value.ToString();
+            }
+            else
+            {
+                femalerdio.Text = custgrdt.Rows[row].Cells[6].Value.ToString();
+            }
+            txt_PolicyId.Text = custgrdt.Rows[row].Cells[7].Value.ToString();
+            //datePic.Value = DateTime.Parse(custgrdt.Rows[row].Cells[8].Value.ToString());
+            txt_Relation.Text = custgrdt.Rows[row].Cells[9].Value.ToString();
+            cmbPName.Text = custgrdt.Rows[row].Cells[10].Value.ToString();
+        }
+
+ private void custgrdt_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            filemygrid(e.RowIndex);
+            //MessageBox.Show(custgrdt.Rows[e.RowIndex].Cells[0].Value.ToString());
+            if (custgrdt.Rows[e.RowIndex].Cells[0].Value != null)
+            {
+                //txt_CustID.Text = custgrdt.Rows[e.RowIndex].Cells[0].Value.ToString();
+                txt_CustName.Text = custgrdt.Rows[e.RowIndex].Cells[1].Value.ToString();
+                txt_ContNo.Text = custgrdt.Rows[e.RowIndex].Cells[2].Value.ToString();
+                txt_Email.Text = custgrdt.Rows[e.RowIndex].Cells[3].Value.ToString();
+                txt_ADD.Text = custgrdt.Rows[e.RowIndex].Cells[4].Value.ToString();
+                txt_Age.Text = custgrdt.Rows[e.RowIndex].Cells[5].Value.ToString();
+                if (maleradio.Checked)
+                {
+                    maleradio.Text = custgrdt.Rows[e.RowIndex].Cells[6].Value.ToString();
+                }
+                else
+                {
+                    femalerdio.Text = custgrdt.Rows[e.RowIndex].Cells[6].Value.ToString();
+                }
+                txt_PolicyId.Text = custgrdt.Rows[e.RowIndex].Cells[7].Value.ToString();
+                datePic.Value = DateTime.Parse(custgrdt.Rows[e.RowIndex].Cells[8].Value.ToString());
+                txt_Relation.Text = custgrdt.Rows[e.RowIndex].Cells[9].Value.ToString();
+                cmbPName.Text = custgrdt.Rows[e.RowIndex].Cells[10].Value.ToString();
+            }

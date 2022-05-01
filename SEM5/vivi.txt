@@ -1,0 +1,51 @@
+1)tools of xml file checking?
+wordtraker and keywordspy keyword keyword discovery
+
+2)TLD full form
+3)conteent optimaion pooint
+  contiant sturucre image CSS
+
+4)work of robot.txt
+  bot allow disallow
+
+mix
+1)mission of google
+2)type 3 and type 4  main deffres of JDBC 
+3)onpage offpage optimaztion
+4)JSE scope
+
+5).net page architecture
+6)Type of othoriztion  a)file  b)url
+7)robot.txt
+6)mysql_fatch use ? Data Display Fatch the data .
+7).net which acttive web sever
+8)J2EE Architecture
+9)Google domain
+10)Yahoo Full   form Yet another hariachiklyi orgainzed orcal
+11)google full form goble orgnation of orinted group language of Earth
+12)applction of 
+13)J2EE and JDBC connecti driver JDBC ODBC
+14)include meaning PAcakge or file
+15)XML site point 3points
+16)how many type of error in .net ? 10types connection error
+17)what is impotent of spring  architecture
+It provide infrastucte paraper appliction together focse on business logic
+18)HOw to giv comment in jsp <%-- --%>
+19)Pojo file
+20)n-tier architecture 
+21)what is wqorking of EJB ?
+22)JSP Scope
+     page,request ,session ,applction
+
+
+
+
+
+
+
+
+
+
+
+
+

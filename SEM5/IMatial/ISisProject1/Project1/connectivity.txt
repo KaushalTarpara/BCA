@@ -1,0 +1,342 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Data.OleDb;
+
+namespace Cannectivity_Demo
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+       
+        string cnStr = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=D:\BCA4\cs\Cannectivity_Demo\Data\Database3.accdb";
+        string QRY = "";
+        DataSet DS;
+        OleDbConnection CNN;
+        OleDbCommand CMD;
+        OleDbDataAdapter DA;
+        int mypos;
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            cmbCity.SelectedIndex = 0;
+            cmbGender.SelectedIndex = 0;
+           // DisableControl(true);
+            BindMyGrid();
+        }
+        void DisableControl(bool B)
+        {
+            ID_Text.ReadOnly = true;
+            Name_txt.ReadOnly = B;
+            cmbGender.Enabled = B;
+            dateTimePicker1.Enabled = B;
+            Address_txt.ReadOnly = B;
+            cmbCity.Enabled = B;
+            Email_Address.ReadOnly = B;
+            ContactTxt.ReadOnly = B;
+            RemarksTxt.ReadOnly = B;
+            if(B)
+            {
+                cmbCity.Enabled = false;
+                cmbGender.Enabled = false;
+                dateTimePicker1.Enabled = false;
+            }
+            else
+            {
+                Name_txt.ReadOnly = true;
+                Address_txt.ReadOnly = true;
+                Email_Address.ReadOnly = true;
+                ContactTxt.ReadOnly = true;
+                RemarksTxt.ReadOnly = true;
+            }
+
+        }
+        int retMymaxID()
+        {
+            int myId = 0;
+            QRY = "SELECT MAX(Stud_ID) FROM tbl_studInformation";
+            CNN = new OleDbConnection(cnStr);
+            CMD = new OleDbCommand(QRY, CNN);
+            CNN.Open();
+            OleDbDataReader dr = CMD.ExecuteReader();
+            if(dr.Read())
+            {
+                myId = int.Parse(dr.GetValue(0).ToString());
+            }
+            dr.Close();
+            CNN.Close();
+            CNN.Dispose();
+            myId++;
+            return myId;
+        }
+
+        void BindMyGrid(string search)
+        {
+            DS = new DataSet();
+            QRY = "SELECT * FROM tbl_studInformation ";
+
+
+            if (search.Trim() != "")
+            {
+                QRY += "WHERE Stud_Name LIKE '%" + search + "%'";
+                QRY+="OR Stud_Name LIKE '%" + Email_Address + "%'";
+            }
+
+
+            //QRY += "Order by Stud_ID";
+            CNN = new OleDbConnection(cnStr);
+            CMD = new OleDbCommand(QRY, CNN);
+            DA = new OleDbDataAdapter(CMD);
+            DA.Fill(DS);
+            dtrGrd1.DataSource = DS.Tables[0];
+           if (dtrGrd1.Rows.Count > 0)
+            {
+                searchtxt.BackColor = Color.Black;
+                searchtxt.ForeColor = Color.White;
+                dtrGrd1.Visible = true;
+            }
+            else
+            {
+                searchtxt.BackColor = Color.Red;
+                searchtxt.ForeColor = Color.White;
+                dtrGrd1.Visible = false;
+            }
+
+            CNN.Dispose();
+            CMD.Dispose();
+            DA.Dispose();
+        }
+        void BindMyGrid()
+        {
+            QRY = "SELECT * FROM tbl_studInformation";
+            CNN = new OleDbConnection(cnStr);
+            DS = new DataSet();
+            CMD = new OleDbCommand(QRY, CNN);
+            DA = new OleDbDataAdapter(CMD);
+            DA.Fill(DS);
+
+            dtrGrd1.DataSource = DS.Tables[0];
+
+            foreach (DataGridViewRow dgr in dtrGrd1.Rows)
+            {
+                dgr.Cells[0].Value = false;
+            }
+
+
+            //dtrGrd1.Columns[0].HeaderText = "Student_ID";
+            //dtrGrd1.Columns[1].HeaderText = "Student_Name";
+            //dtrGrd1.Columns[2].HeaderText = "Student_Contect";
+            //dtrGrd1.Columns[3].HeaderText = "Student_Email";
+
+            //dtrGrd1.Columns[0].AutoSizeMode = DataGridView.displaymode;
+
+            CNN.Dispose();
+            CMD.Dispose();
+            DA.Dispose();
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            QRY = "INSERT INTO tbl_studInformation VALUES(";
+            QRY += "" + retMymaxID() + ",";
+            //QRY += "" + ID_Text.Text + ",";
+            QRY += "'" + Name_txt.Text + "',";
+            QRY += "'" + cmbGender.SelectedItem.ToString() + "',";
+            QRY += "'" + dateTimePicker1.Value.ToShortDateString() + "',";
+            QRY += "'" + cmbCity.SelectedItem.ToString() + "',";
+            QRY += "'" + Address_txt.Text + "',";
+            QRY += "'" + Email_Address.Text + "',";
+            QRY += "" + ContactTxt.Text + ",";
+            QRY += "'" + RemarksTxt.Text + "'";
+            QRY += ")";
+
+
+
+            CNN = new OleDbConnection(cnStr);
+            CMD = new OleDbCommand(QRY, CNN);
+            CNN.Open();
+            CMD.ExecuteNonQuery();
+            CNN.Close();
+            CNN.Dispose();
+            CMD.Dispose();
+
+
+            BindMyGrid();
+        }
+
+        private void splitContainer1_Panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+       
+        private void dtrGrd1_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            // FillToMyControl();
+            ID_Text.Text = dtrGrd1.Rows[e.RowIndex].Cells[2].Value.ToString();
+            Name_txt.Text = dtrGrd1.Rows[e.RowIndex].Cells[3].Value.ToString();
+            cmbGender.Text = dtrGrd1.Rows[e.RowIndex].Cells[4].Value.ToString();
+            dateTimePicker1.Value = DateTime.Parse(dtrGrd1.Rows[e.RowIndex].Cells[5].Value.ToString());
+            cmbCity.Text = dtrGrd1.Rows[e.RowIndex].Cells[6].Value.ToString();
+            Address_txt.Text = dtrGrd1.Rows[e.RowIndex].Cells[7].Value.ToString();
+            Email_Address.Text = dtrGrd1.Rows[e.RowIndex].Cells[8].Value.ToString();
+            ContactTxt.Text = dtrGrd1.Rows[e.RowIndex].Cells[9].Value.ToString();
+            RemarksTxt.Text = dtrGrd1.Rows[e.RowIndex].Cells[10].Value.ToString();
+        }
+
+        private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void searchtxt_TextChanged(object sender, EventArgs e)
+        {
+            BindMyGrid(searchtxt.Text);
+        }      
+
+        private void dtrGrd1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 0)
+            {
+                if (dtrGrd1[0, e.RowIndex].Value.ToString().ToUpper() == "true")
+                {
+                    dtrGrd1[0, e.RowIndex].Value = false;
+                }
+                else dtrGrd1[0, e.RowIndex].Value = true;
+            }
+            if (e.ColumnIndex == 0)
+            {
+                if (DialogResult.Yes == MessageBox.Show("Are you sure you want to delete", "Delete", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question))
+                {
+                    QRY = "DELETE FROM tbl_studInformation";
+                    QRY += " WHERE Stud_ID = "+dtrGrd1[1, e.RowIndex].Value.ToString()+ "";
+                    CNN=new OleDbConnection(cnStr);
+                    CMD= new OleDbCommand(QRY,CNN);
+                    CNN.Open();
+                    CMD.ExecuteNonQuery();
+                    CNN.Close();
+                    BindMyGrid();
+                }
+            }
+            //object obj = dtrGrd1[0, e.RowIndex].Value = true;
+            //MessageBox.Show(dtrGrd1[0,e.RowIndex].ToString());
+        }
+        void sellmycheckBoxInGrid(bool B)
+        {
+            foreach (DataGridViewRow DGR in dtrGrd1.Rows)
+            {
+                DGR.Cells[0].Value = B;
+            }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked)
+            {
+                sellmycheckBoxInGrid(true);
+            }
+            else
+            {
+                sellmycheckBoxInGrid(false);
+            }
+        }         
+        void filetomycontrol(int row)
+        {
+            ID_Text.Text = dtrGrd1.Rows[row].Cells[2].Value.ToString();
+            Name_txt.Text = dtrGrd1.Rows[row].Cells[3].Value.ToString();
+            cmbGender.Text = dtrGrd1.Rows[row].Cells[4].Value.ToString();
+            dateTimePicker1.Value = DateTime.Parse(dtrGrd1.Rows[row].Cells[5].Value.ToString());
+            cmbCity.Text = dtrGrd1.Rows[row].Cells[6].Value.ToString();
+            Address_txt.Text = dtrGrd1.Rows[row].Cells[7].Value.ToString();
+            Email_Address.Text = dtrGrd1.Rows[row].Cells[8].Value.ToString();
+            ContactTxt.Text = dtrGrd1.Rows[row].Cells[9].Value.ToString();
+            RemarksTxt.Text = dtrGrd1.Rows[row].Cells[10].Value.ToString();
+        }
+
+        private void btn_First_Click(object sender, EventArgs e)
+        {
+            mypos = 0;
+            dtrGrd1.ClearSelection();
+            dtrGrd1.Rows[mypos].Selected = true;
+            filetomycontrol(mypos);
+            btn_First.Enabled = false;
+            btn_Next.Enabled = true;
+            btn_Last.Enabled = true;
+        }
+
+        private void btn_Prev_Click(object sender, EventArgs e)
+        {
+            mypos = 0;
+            btn_Next.Enabled = true;
+            btn_Last.Enabled = true;
+            if(mypos<0)
+            {
+                mypos = 0;
+                MessageBox.Show("This is First Record", "Previous", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                btn_Prev.Enabled = false;
+            }
+            filetomycontrol(mypos);
+            foreach(DataGridViewRow dgr in dtrGrd1.Rows)
+            {
+                dgr.Selected = false;
+            }
+            dtrGrd1.Rows[mypos].Selected = true;
+        }
+
+        private void btn_Next_Click(object sender, EventArgs e)
+        {
+            mypos++;
+            btn_Prev.Enabled = true;
+            btn_Prev.Enabled = true;
+            if(mypos>=dtrGrd1.Rows.Count)
+            {
+                mypos = dtrGrd1.Rows.Count - 1;
+                MessageBox.Show("This is Last Record", "Next", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                btn_Next.Enabled = false;
+            }
+            filetomycontrol(mypos);
+            foreach(DataGridViewRow dgr in dtrGrd1.Rows)
+            {
+                dgr.Selected = false;
+            }
+            dtrGrd1.Rows[mypos].Selected = true;
+        }
+
+        private void btn_Last_Click(object sender, EventArgs e)
+        {
+            mypos = dtrGrd1.Rows.Count - 1;
+            dtrGrd1.ClearSelection();
+            dtrGrd1.Rows[mypos].Selected = true;
+            filetomycontrol(mypos);
+            btn_First.Enabled = true;
+            btn_Next.Enabled = false;
+            btn_Last.Enabled = true;
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_First_Click_1(object sender, EventArgs e)
+        {
+            mypos = 0;
+            dtrGrd1.ClearSelection();
+            dtrGrd1.Rows[mypos].Selected = true;
+            filetomycontrol(mypos);
+            btn_First.Enabled = false;
+            btn_Next.Enabled = true;
+            btn_Last.Enabled = true;
+        }
+     }
+}

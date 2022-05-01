@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<!-- saved from url=(0102)https://mysql.tutorials24x7.com/blog/guide-to-design-database-for-inventory-management-system-in-mysql -->
+<html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+<!-- Use minimum-scale=1.0, maximum-scale=1.0, user-scalable=no for mobile applications -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<!-- Google Search Console -->
+<meta name="google-site-verification" content="JEeif5r1UHsBUdCL6Zlv5yb4TdHj6q9UVAprXq-_VoQ">
+<!--bing webmaster -->
+<meta name="msvalidate.01" content="CF73B11BE0476E1B226C5D86A63184E8">
+<!-- yandex search engine -->
+<meta name="yandex-verification" content="4bd0f44ef63284ae">
+<!--printrest -->
+<meta name="p:domain_verify" content="79749a5d3c657d0cada43c7a0c9007db">
+
+<meta name="last-updated" content="2021-04-02 12:54:41 UTC"><meta name="description" content="A complete guide to designing a database in MySQL for inventory management system including suppliers, salespersons, items, item stock, purchase orders, and cus"><meta name="keywords" content="Tutorials24x7, Database, Design, MySQL, Inventory, Supplier, Salesperson, Item, Stock, Purchase"><meta name="robots" content="index,follow"><meta name="csrf-param" content="_csrf-t24x7-site">
+<meta name="csrf-token" content="2DhhK7oAeCJB1g1UwijQkYxad2CkjpBOhWL5Zo3pasDqDzRT-3VOWBWTbDnyQ5aiwB82FvfCpgv3U5EN1Y4BkA==">
+
+<meta property="og:title" content="Guide To Design Database For Inventory Management System In MySQL"><meta property="og:site_name" content="Tutorials24x7"><meta property="og:url" content="https://mysql.tutorials24x7.com/blog/guide-to-design-database-for-inventory-management-system-in-mysql"><meta property="og:description" content="A complete guide to designing a database in MySQL for inventory management system including suppliers, salespersons, items, item stock, purchase orders, and customer orders."><meta property="og:locale" content="en_US"><meta property="og:type" content="article"><meta property="fb:app_id" content="541804105976425"><meta property="og:image" content="https://mysql.tutorials24x7.com/uploads/2020-10-25/banner/tutorials24x7-inventory-management-database-banner.jpg"><meta property="og:image:width" content="1920"><meta property="og:image:height" content="850"><meta property="og:image:type" content="2"><meta property="article:author" content="Tutorials24x7"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="24x7tutorials"><meta name="twitter:creator" content="24x7tutorials">
+<title>Guide To Design Database For Inventory Management System In MySQL | Tutorials24x7</title>
+
+<!-- IE fix for console -->
+<script type="text/javascript" async="" src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/analytics.js.download"></script><script src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/sdk.js.download" async="" crossorigin="anonymous"></script><script type="text/javascript" async="" defer="" src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/piwik.js.download"></script><script async="" src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/fbevents.js.download"></script><script id="facebook-jssdk" src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/sdk.js(1).download"></script><script type="text/javascript"> if ( !window.console ) console = { log: function() {} }; </script>
+
+<!-- App Icons -->
+<link href="https://mysql.tutorials24x7.com/images/icons/favicon.ico" rel="shortcut icon">
+<link href="https://mysql.tutorials24x7.com/images/icons/apple-icon-precomposed.png" rel="apple-touch-icon-precomposed">
+
+<link href="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/fawbtblg-20200426.css" rel="stylesheet">
+<link href="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/cmnbtblg-20200426.css" rel="stylesheet">
+<link href="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/pubbtblg-20200426.css" rel="stylesheet">
+<script>
+			window.fbAsyncInit = function() {
+			  FB.init({
+				appId            : '',
+				autoLogAppEvents : true,
+				xfbml            : true,
+				version          : 'v3.0'
+			  });
+			};
+
+			(function(d, s, id){
+			   var js, fjs = d.getElementsByTagName(s)[0];
+			   if (d.getElementById(id)) {return;}
+			   js = d.createElement(s); js.id = id;
+			   js.src = "https://connect.facebook.net/en_US/sdk.js";
+			   fjs.parentNode.insertBefore(js, fjs);
+			 }(document, 'script', 'facebook-jssdk'));</script>    <style></style><script src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/embed.js.download" data-timestamp="1627133809627"></script><link rel="prefetch" as="style" href="https://c.disquscdn.com/next/embed/styles/lounge.e16bb81d3982e913e07bd7f31be71a6c.css"><link rel="prefetch" as="script" href="https://c.disquscdn.com/next/embed/common.bundle.ee2555081038338ea4f41cbb3ea1bc17.js"><link rel="prefetch" as="script" href="https://c.disquscdn.com/next/embed/lounge.bundle.106faac21c6c76e0298d1a260d46eaf3.js"><link rel="prefetch" as="script" href="https://disqus.com/next/config.js"><script async="" id="dsq_recs_scr" src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/recommendations.js.download"></script><link rel="prefetch" as="style" href="https://c.disquscdn.com/next/recommendations/styles/recommendations.eff219b98b7c4167b4b289065f36f391.css"><link rel="prefetch" as="script" href="https://c.disquscdn.com/next/recommendations/common.bundle.72e35017d98ea7f210961b0d5c38444a.js"><link rel="prefetch" as="script" href="https://c.disquscdn.com/next/recommendations/recommendations.bundle.37a289e2ed6acdf6cbf01e83d4fb3ce6.js"><link rel="prefetch" as="script" href="https://disqus.com/next/config.js"><script src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/alfie_v4.63f1ab6d6b9d5807dc0c94ef3fe0b851.js.download" async="" charset="UTF-8"></script><style type="text/css" data-fbcssmodules="css:fb.css.base css:fb.css.dialog css:fb.css.iframewidget css:fb.css.customer_chat_plugin_iframe">.fb_hidden{position:absolute;top:-10000px;z-index:10001}.fb_reposition{overflow:hidden;position:relative}.fb_invisible{display:none}.fb_reset{background:none;border:0;border-spacing:0;color:#000;cursor:auto;direction:ltr;font-family:"lucida grande", tahoma, verdana, arial, sans-serif;font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal}.fb_reset>div{overflow:hidden}@keyframes fb_transform{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}.fb_animate{animation:fb_transform .3s forwards}
+.fb_dialog{background:rgba(82, 82, 82, .7);position:absolute;top:-10000px;z-index:10001}.fb_dialog_advanced{border-radius:8px;padding:10px}.fb_dialog_content{background:#fff;color:#373737}.fb_dialog_close_icon{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 0 transparent;cursor:pointer;display:block;height:15px;position:absolute;right:18px;top:17px;width:15px}.fb_dialog_mobile .fb_dialog_close_icon{left:5px;right:auto;top:5px}.fb_dialog_padding{background-color:transparent;position:absolute;width:1px;z-index:-1}.fb_dialog_close_icon:hover{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -15px transparent}.fb_dialog_close_icon:active{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -30px transparent}.fb_dialog_iframe{line-height:0}.fb_dialog_content .dialog_title{background:#6d84b4;border:1px solid #365899;color:#fff;font-size:14px;font-weight:bold;margin:0}.fb_dialog_content .dialog_title>span{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/yd/r/Cou7n-nqK52.gif) no-repeat 5px 50%;float:left;padding:5px 0 7px 26px}body.fb_hidden{height:100%;left:0;margin:0;overflow:visible;position:absolute;top:-10000px;transform:none;width:100%}.fb_dialog.fb_dialog_mobile.loading{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/ya/r/3rhSv5V8j3o.gif) white no-repeat 50% 50%;min-height:100%;min-width:100%;overflow:hidden;position:absolute;top:0;z-index:10001}.fb_dialog.fb_dialog_mobile.loading.centered{background:none;height:auto;min-height:initial;min-width:initial;width:auto}.fb_dialog.fb_dialog_mobile.loading.centered #fb_dialog_loader_spinner{width:100%}.fb_dialog.fb_dialog_mobile.loading.centered .fb_dialog_content{background:none}.loading.centered #fb_dialog_loader_close{clear:both;color:#fff;display:block;font-size:18px;padding-top:20px}#fb-root #fb_dialog_ipad_overlay{background:rgba(0, 0, 0, .4);bottom:0;left:0;min-height:100%;position:absolute;right:0;top:0;width:100%;z-index:10000}#fb-root #fb_dialog_ipad_overlay.hidden{display:none}.fb_dialog.fb_dialog_mobile.loading iframe{visibility:hidden}.fb_dialog_mobile .fb_dialog_iframe{position:sticky;top:0}.fb_dialog_content .dialog_header{background:linear-gradient(from(#738aba), to(#2c4987));border-bottom:1px solid;border-color:#043b87;box-shadow:white 0 1px 1px -1px inset;color:#fff;font:bold 14px Helvetica, sans-serif;text-overflow:ellipsis;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0;vertical-align:middle;white-space:nowrap}.fb_dialog_content .dialog_header table{height:43px;width:100%}.fb_dialog_content .dialog_header td.header_left{font-size:12px;padding-left:5px;vertical-align:middle;width:60px}.fb_dialog_content .dialog_header td.header_right{font-size:12px;padding-right:5px;vertical-align:middle;width:60px}.fb_dialog_content .touchable_button{background:linear-gradient(from(#4267B2), to(#2a4887));background-clip:padding-box;border:1px solid #29487d;border-radius:3px;display:inline-block;line-height:18px;margin-top:3px;max-width:85px;padding:4px 12px;position:relative}.fb_dialog_content .dialog_header .touchable_button input{background:none;border:none;color:#fff;font:bold 12px Helvetica, sans-serif;margin:2px -12px;padding:2px 6px 3px 6px;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}.fb_dialog_content .dialog_header .header_center{color:#fff;font-size:16px;font-weight:bold;line-height:18px;text-align:center;vertical-align:middle}.fb_dialog_content .dialog_content{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/y9/r/jKEcVPZFk-2.gif) no-repeat 50% 50%;border:1px solid #4a4a4a;border-bottom:0;border-top:0;height:150px}.fb_dialog_content .dialog_footer{background:#f5f6f7;border:1px solid #4a4a4a;border-top-color:#ccc;height:40px}#fb_dialog_loader_close{float:left}.fb_dialog.fb_dialog_mobile .fb_dialog_close_icon{visibility:hidden}#fb_dialog_loader_spinner{animation:rotateSpinner 1.2s linear infinite;background-color:transparent;background-image:url(https://static.xx.fbcdn.net/rsrc.php/v3/yD/r/t-wz8gw1xG1.png);background-position:50% 50%;background-repeat:no-repeat;height:24px;width:24px}@keyframes rotateSpinner{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.fb_iframe_widget{display:inline-block;position:relative}.fb_iframe_widget span{display:inline-block;position:relative;text-align:justify}.fb_iframe_widget iframe{position:absolute}.fb_iframe_widget_fluid_desktop,.fb_iframe_widget_fluid_desktop span,.fb_iframe_widget_fluid_desktop iframe{max-width:100%}.fb_iframe_widget_fluid_desktop iframe{min-width:220px;position:relative}.fb_iframe_widget_lift{z-index:1}.fb_iframe_widget_fluid{display:inline}.fb_iframe_widget_fluid span{width:100%}
+.fb_mpn_mobile_landing_page_slide_out{animation-duration:200ms;animation-name:fb_mpn_landing_page_slide_out;transition-timing-function:ease-in}.fb_mpn_mobile_landing_page_slide_out_from_left{animation-duration:200ms;animation-name:fb_mpn_landing_page_slide_out_from_left;transition-timing-function:ease-in}.fb_mpn_mobile_landing_page_slide_up{animation-duration:500ms;animation-name:fb_mpn_landing_page_slide_up;transition-timing-function:ease-in}.fb_mpn_mobile_bounce_in{animation-duration:300ms;animation-name:fb_mpn_bounce_in;transition-timing-function:ease-in}.fb_mpn_mobile_bounce_out{animation-duration:300ms;animation-name:fb_mpn_bounce_out;transition-timing-function:ease-in}.fb_mpn_mobile_bounce_out_v2{animation-duration:300ms;animation-name:fb_mpn_fade_out;transition-timing-function:ease-in}.fb_customer_chat_bounce_in_v2{animation-duration:300ms;animation-name:fb_bounce_in_v2;transition-timing-function:ease-in}.fb_customer_chat_bounce_in_from_left{animation-duration:300ms;animation-name:fb_bounce_in_from_left;transition-timing-function:ease-in}.fb_customer_chat_bounce_out_v2{animation-duration:300ms;animation-name:fb_bounce_out_v2;transition-timing-function:ease-in}.fb_customer_chat_bounce_out_from_left{animation-duration:300ms;animation-name:fb_bounce_out_from_left;transition-timing-function:ease-in}.fb_customer_chat_bubble_animated_no_badge{box-shadow:0 3px 12px rgba(0, 0, 0, .15);transition:box-shadow 150ms linear}.fb_customer_chat_bubble_animated_no_badge:hover{box-shadow:0 5px 24px rgba(0, 0, 0, .3)}.fb_customer_chat_bubble_animated_with_badge{box-shadow:-5px 4px 14px rgba(0, 0, 0, .15);transition:box-shadow 150ms linear}.fb_customer_chat_bubble_animated_with_badge:hover{box-shadow:-5px 8px 24px rgba(0, 0, 0, .2)}.fb_invisible_flow{display:inherit;height:0;overflow-x:hidden;width:0}.fb_new_ui_mobile_overlay_active{overflow:hidden}@keyframes fb_mpn_landing_page_slide_in{0%{border-radius:50%;margin:0 24px;width:60px}40%{border-radius:18px}100%{margin:0 12px;width:100% - 24px}}@keyframes fb_mpn_landing_page_slide_in_from_left{0%{border-radius:50%;left:12px;margin:0 24px;width:60px}40%{border-radius:18px}100%{left:12px;margin:0 12px;width:100% - 24px}}@keyframes fb_mpn_landing_page_slide_out{0%{margin:0 12px;width:100% - 24px}60%{border-radius:18px}100%{border-radius:50%;margin:0 24px;width:60px}}@keyframes fb_mpn_landing_page_slide_out_from_left{0%{left:12px;width:100% - 24px}60%{border-radius:18px}100%{border-radius:50%;left:12px;width:60px}}@keyframes fb_mpn_landing_page_slide_up{0%{bottom:0;opacity:0}100%{bottom:24px;opacity:1}}@keyframes fb_mpn_bounce_in{0%{opacity:.5;top:100%}100%{opacity:1;top:0}}@keyframes fb_mpn_fade_out{0%{bottom:30px;opacity:1}100%{bottom:0;opacity:0}}@keyframes fb_mpn_bounce_out{0%{opacity:1;top:0}100%{opacity:.5;top:100%}}@keyframes fb_bounce_in_v2{0%{opacity:0;transform:scale(0, 0);transform-origin:bottom right}50%{transform:scale(1.03, 1.03);transform-origin:bottom right}100%{opacity:1;transform:scale(1, 1);transform-origin:bottom right}}@keyframes fb_bounce_in_from_left{0%{opacity:0;transform:scale(0, 0);transform-origin:bottom left}50%{transform:scale(1.03, 1.03);transform-origin:bottom left}100%{opacity:1;transform:scale(1, 1);transform-origin:bottom left}}@keyframes fb_bounce_out_v2{0%{opacity:1;transform:scale(1, 1);transform-origin:bottom right}100%{opacity:0;transform:scale(0, 0);transform-origin:bottom right}}@keyframes fb_bounce_out_from_left{0%{opacity:1;transform:scale(1, 1);transform-origin:bottom left}100%{opacity:0;transform:scale(0, 0);transform-origin:bottom left}}@keyframes fb_bounce_out_v2_mobile_chat_started{0%{opacity:1;top:0}100%{opacity:0;top:20px}}@keyframes fb_customer_chat_bubble_bounce_in_animation{0%{bottom:6pt;opacity:0;transform:scale(0, 0);transform-origin:center}70%{bottom:18pt;opacity:1;transform:scale(1.2, 1.2)}100%{transform:scale(1, 1)}}@keyframes slideInFromBottom{0%{opacity:.1;transform:translateY(100%)}100%{opacity:1;transform:translateY(0)}}@keyframes slideInFromBottomDelay{0%{opacity:0;transform:translateY(100%)}97%{opacity:0;transform:translateY(100%)}100%{opacity:1;transform:translateY(0)}}</style></head>
+    <body id="scroll-top">
+        		<div id="pre-loader-main" class="pre-loader valign-center align align-center" style="display: none;">
+			<div class="spinner cmti cmti-3x cmti-spinner-1 spin animate animate-zoom-out"></div>
+		</div>
+		<header id="header-main" class="header header-main header-basic header-basic-duo header-fixed shadow shadow-primary">
+	<div class="row">
+		<div class="header-logo">
+			<div class="logo">
+				<a href="https://mysql.tutorials24x7.com/"><img src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/logo.png"></a>			</div>
+			<div class="logo-small">
+				<a href="https://mysql.tutorials24x7.com/"><img src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/logo-small.png"></a>			</div>
+		</div>
+		<ul id="menu-main" class="nav uppercase"><li><a href="https://mysql.tutorials24x7.com/">Home</a></li>
+<li><a href="https://www.tutorials24x7.com/about-us" target="_blank">About Us</a></li>
+<li><a href="https://www.tutorials24x7.com/terms" target="_blank">Terms &amp; Conditions</a></li>
+<li><a href="https://www.tutorials24x7.com/privacy" target="_blank">Privacy Policy</a></li>
+<li><a href="https://www.tutorials24x7.com/">Main Site</a></li></ul>		<div id="mobile-actions">
+			<span id="btn-menu-mobile" class="mobile-action">
+				<i class="cmti cmti-menu"></i>
+			</span>
+		</div>
+	</div>
+	<div id="menu-mobile-wrap" class="relative">
+		<ul id="menu-main-mobile" class="vnav uppercase"><li><a href="https://mysql.tutorials24x7.com/">Home</a></li>
+<li><a href="https://www.tutorials24x7.com/about-us" target="_blank">About Us</a></li>
+<li><a href="https://www.tutorials24x7.com/terms" target="_blank">Terms &amp; Conditions</a></li>
+<li><a href="https://www.tutorials24x7.com/privacy" target="_blank">Privacy Policy</a></li>
+<li><a href="https://www.tutorials24x7.com/">Main Site</a></li></ul>	</div>
+</header>
+        <div class="container container-main">
+	        <div class="content-wrap content-main-wrap">
+	        	<div class="content">
+	        		<div class="page page-basic page-default page-model-blog page-guide-to-design-database-for-inventory-management-system-in-mysql" data-slug="guide-to-design-database-for-inventory-management-system-in-mysql" cmt-block="block-half-auto" style="height: auto; min-height: 396px;">
+	
+	<div class="page-content-wrap">
+								<div class="page-sidebar-wrap page-sidebar-wrap-top">
+					<div class="sidebar sidebar-basic sidebar-vertical obj-sidebar sidebar-vsidebar sidebar-post-top">
+
+
+<div class="sidebar-content-wrap">
+			<div class="sidebar-content ">
+										
+	<div class="sidebar-widget-wrap row">
+		<div class="widget widget-basic widget-default obj-widget widget-google-large-2">
+
+
+<div class="widget-content-wrap">
+			<div class="widget-content align align-center color color-primary margin margin-top-small">
+										
+
+	<div class="widget-content-raw"><ins class="adsbygoogle" style="display:inline-block;min-width:200px;max-width:970px;width:100%;height:90px;background-color: #f4f6f8 !important;" data-ad-client="ca-pub-9075166357650375" data-ad-slot="2320791608" data-full-width-responsive="true"></ins>
+ <script>
+ (adsbygoogle = window.adsbygoogle || []).push({});
+ </script></div>
+
+<!-- <div class="widget-content-buffer"></div> -->
+
+	</div>
+</div>
+</div>	</div>
+	</div>
+</div>
+</div>			</div>
+							<div class="page-content-row row max-cols-100">
+								<div class="colf colf-sidebar-filler colf12x9">
+						<div class="page-content ">
+					<div class="page-content-banner">
+				<img class="width width-100 " src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/tutorials24x7-inventory-management-database-banner.jpg" title="Guide To Design Database For Inventory Management System In MySQL" alt="Guide To Design Database For Inventory Management System In MySQL">
+			</div>
+							<h1 class="page-content-title">Guide To Design Database For Inventory Management System In MySQL</h1>
+									<h3 class="page-content-summary reader"><p>A complete guide to designing a database in MySQL for inventory management system including suppliers, salespersons, items, item stock, purchase orders, and customer orders.</p></h3>
+							<div class="page-content-social">
+	<div class="page-publish-date inline-block">
+		<i class="icon cmti cmti-calendar"></i>
+					<span class="margin margin-small-h">October 25, 2020</span>
+			</div>
+	<div class="widget widget-social-share"><ul class="nav">
+           <li>
+		   <a title="Share on Reddit" class="share-reddit cmti cmti-brand cmti-brand-reddit color color-reddit" href="https://reddit.com/submit?url=https://mysql.tutorials24x7.com/blog/guide-to-design-database-for-inventory-management-system-in-mysql" target="_blank"></a>
+	   </li>
+    	       <li>
+		   <a title="Share on Facebook" class="share-facebook cmti cmti-brand cmti-brand-facebook color color-facebook" href="http://www.facebook.com/sharer.php?u=https://mysql.tutorials24x7.com/blog/guide-to-design-database-for-inventory-management-system-in-mysql" target="_blank"></a>
+	   </li>
+               <li>
+		   <a title="Share on Pinterest" class="share-pinterest cmti cmti-brand cmti-brand-pinterest color color-pinterest" href="http://pinterest.com/pin/create/link/?url=https://mysql.tutorials24x7.com/blog/guide-to-design-database-for-inventory-management-system-in-mysql" target="_blank"></a>
+	   </li>
+    
+           <li>
+		<a title="Share on Twitter" class="share-twitter cmti cmti-brand cmti-brand-twitter color color-twitter" href="https://twitter.com/share?url=https://mysql.tutorials24x7.com/blog/guide-to-design-database-for-inventory-management-system-in-mysql" target="_blank"></a>
+	   </li>
+    
+           <li>
+		   <a title="Share on LinkedIn" class="share-linkedin cmti cmti-brand cmti-brand-linkedin color color-linkedin" href="http://www.linkedin.com/shareArticle?url=https://mysql.tutorials24x7.com/blog/guide-to-design-database-for-inventory-management-system-in-mysql" target="_blank"></a>
+	   </li>
+               <li>
+		   <a title="Share on Tumblr" class="share-tumblr cmti cmti-brand cmti-brand-tumblr color color-tumblr" href="https://www.tumblr.com/widgets/share/tool?canonicalUrl=https://mysql.tutorials24x7.com/blog/guide-to-design-database-for-inventory-management-system-in-mysql" target="_blank"></a>
+	   </li>
+               <li>
+		   <a title="Share on Mix" class="share-mix cmti cmti-brand cmti-brand-mix color color-mix" href="http://mix.com/submit?url=https://mysql.tutorials24x7.com/blog/guide-to-design-database-for-inventory-management-system-in-mysql" target="_blank"></a>
+	   </li>
+    </ul>
+</div></div>
+											<div class="page-content-data reader"><p>This tutorial provides the complete steps to design a database schema of the Inventory Management System to manage the suppliers, salespersons, items, item stock, purchase orders, and customer orders.</p>
+<p></p>
+<p><strong>Notes</strong>: Commonly, businesses in retail and manufacturing employ inventory systems.&nbsp; Among widespread use cases in other industries, this database schema can be used, for instance, for <a href="https://www.scnsoft.com/healthcare/software-development/hospital-inventory-management" target="_blank">hospital inventory management</a> to increase the efficiency of healthcare supply chains and reduce medication waste.</p>
+<p></p>
+<p>The Entity Relationship Diagram or visual database design is shown below.</p>
+<p></p>
+<div class="wrap-editor-image"><img class="fluid" src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/tutorials24x7-mysql-inventory-database-design.png" title="Inventory Management Database Design" alt="Inventory Management Database Design">
+<p class="image-caption">Inventory Management Database</p>
+</div>
+<p></p>
+<p>You can also visit the popular tutorials including&nbsp;<a href="https://mysql.tutorials24x7.com/blog/how-to-install-mysql-8-on-ubuntu-20-04-lts">How To Install MySQL 8 on Ubuntu 20.04 LTS</a>, <a href="https://mysql.tutorials24x7.com/blog/how-to-install-mysql-8-on-windows">How To Install MySQL 8 on Windows</a>, <a href="https://mysql.tutorials24x7.com/blog/how-to-install-mysql-workbench-on-ubuntu">How To Install MySQL Workbench On Ubuntu</a>, <a href="https://mysql.tutorials24x7.com/blog/how-to-install-mysql-8-with-workbench-on-windows-10">How To Install MySQL 8 With Workbench On Windows 10</a>, <a href="https://mysql.tutorials24x7.com/blog/guide-to-design-database-for-rbac-in-mysql">RBAC Database in MySql</a>, <a href="https://mysql.tutorials24x7.com/blog/guide-to-design-a-database-for-blog-management-in-mysql">Blog Database in MySql</a>, <a href="https://mysql.tutorials24x7.com/blog/guide-to-design-database-for-quiz-in-mysql">Quiz Database in MySQL</a>, <a href="https://mysql.tutorials24x7.com/blog/guide-to-design-database-for-poll-in-mysql">Poll &amp; Survey Database in MySQL</a>, <a href="https://mysql.tutorials24x7.com/blog/guide-to-design-database-for-shopping-cart-in-mysql">Online Shopping Cart Database in MySQL</a>, and <a href="https://mysql.tutorials24x7.com/blog/learn-basic-sql-queries-using-mysql"> Learn Basic SQL Queries In MySQL</a>.</p>
+<p></p>
+<h3>Inventory Database</h3>
+<p></p>
+<p>The very first step is to create the Inventory Database. It can be created using the query as shown below.</p>
+<p></p>
+<pre>CREATE SCHEMA `inventory` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;</pre>
+<p></p>
+<p>I have used the character set <strong>utf8mb4</strong> to support a wide range of characters.</p>
+<p></p>
+<h3>User Table</h3>
+<p></p>
+<p>In this section, we will design the <strong>User Table</strong> to store user information. Users can manage their own profiles. Also, the users can use the application according to the roles assigned to them. You can also refer to the tutorial <a href="https://mysql.tutorials24x7.com/blog/guide-to-design-database-for-rbac-in-mysql">RBAC Database in MySql</a> to implement a complete RBAC system for managing roles and permissions. Below mentioned is the description of all the columns of the User Table.</p>
+<p></p>
+<table class="table table-border">
+<tbody>
+<tr>
+<td class="bold">Id</td>
+<td>The unique id to identify the user.</td>
+</tr>
+<tr>
+<td class="bold">Role Id</td>
+<td>The role of the user. It can be Admin, Supplier, Salesperson, and Customer.</td>
+</tr>
+<tr>
+<td class="bold">First Name</td>
+<td>The first name of the user.</td>
+</tr>
+<tr>
+<td class="bold">Middle Name</td>
+<td>The middle name of the user.</td>
+</tr>
+<tr>
+<td class="bold">Last Name</td>
+<td>The last name of the user.</td>
+</tr>
+<tr>
+<td class="bold">Mobile</td>
+<td>The mobile number of the user. It can be used for login and registration purposes.</td>
+</tr>
+<tr>
+<td class="bold">Email</td>
+<td>The email of the user. It can be used for login and registration purposes.</td>
+</tr>
+<tr>
+<td class="bold">Password Hash</td>
+<td>The password hash generated by the appropriate algorithm. We must avoid storing plain or encrypted passwords.</td>
+</tr>
+<tr>
+<td class="bold">Registered At</td>
+<td>This column can be used to calculate the life of the user with the application.</td>
+</tr>
+<tr>
+<td class="bold">Last Login</td>
+<td>It can be used to identify the last login of the user.</td>
+</tr>
+<tr>
+<td class="bold">Intro</td>
+<td>A brief introduction of the User.</td>
+</tr>
+<tr>
+<td class="bold">Profile</td>
+<td>User details.</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p>The User Table with the appropriate constraints is shown below.</p>
+<p></p>
+<pre>CREATE TABLE `inventory`.`user` (<br>  `id` BIGINT NOT NULL AUTO_INCREMENT,<br>  `roleId` SMALLINT NOT NULL,<br>  `firstName` VARCHAR(50) NULL DEFAULT NULL,<br>  `middleName` VARCHAR(50) NULL DEFAULT NULL,<br>  `lastName` VARCHAR(50) NULL DEFAULT NULL,<br>  `username` VARCHAR(50) NULL DEFAULT NULL,<br>  `mobile` VARCHAR(15) NULL,<br>  `email` VARCHAR(50) NULL,<br>  `passwordHash` VARCHAR(32) NOT NULL,<br>  `registeredAt` DATETIME NOT NULL,<br>  `lastLogin` DATETIME NULL DEFAULT NULL,<br>  `intro` TINYTEXT NULL DEFAULT NULL,<br>  `profile` TEXT NULL DEFAULT NULL,<br>  PRIMARY KEY (`id`),<br>  UNIQUE INDEX `uq_username` (`username` ASC),<br>  UNIQUE INDEX `uq_mobile` (`mobile` ASC),<br>  UNIQUE INDEX `uq_email` (`email` ASC) );</pre>
+<p></p>
+<h3>Product Table</h3>
+<p></p>
+<p>In this section, we will design the <strong>Product Table</strong> to store the product data. Below mentioned is the description of all the columns of the Product Table.</p>
+<p></p>
+<table class="table table-border">
+<tbody>
+<tr>
+<td class="bold">Id</td>
+<td>The unique id to identify the product.</td>
+</tr>
+<tr>
+<td class="bold">Title</td>
+<td>The product title to be displayed on the Inventory.</td>
+</tr>
+<tr>
+<td class="bold">Summary</td>
+<td>The summary to mention the key highlights.</td>
+</tr>
+<tr>
+<td class="bold">Type</td>
+<td>The type to distinguish between the different product types.</td>
+</tr>
+<tr>
+<td class="bold">Created At</td>
+<td>It stores the date and time at which the product is created.</td>
+</tr>
+<tr>
+<td class="bold">Updated At</td>
+<td>It stores the date and time at which the product is updated.</td>
+</tr>
+<tr>
+<td class="bold">Content</td>
+<td>The column used to store the additional details of the product.</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p>The Product Table with the appropriate constraints is shown below.</p>
+<p></p>
+<pre>CREATE TABLE `inventory`.`product` (<br>  `id` BIGINT NOT NULL AUTO_INCREMENT,<br>  `title` VARCHAR(75) NOT NULL,<br>  `summary` TINYTEXT NULL,<br>  `type` SMALLINT(6) NOT NULL DEFAULT 0,<br>  `createdAt` DATETIME NOT NULL,<br>  `updatedAt` DATETIME NULL DEFAULT NULL,<br>  `content` TEXT NULL DEFAULT NULL,<br>  PRIMARY KEY (`id`) <br>);</pre>
+<p></p>
+<h3>Product Meta</h3>
+<p></p>
+<p>The Product Meta Table can be used to store additional information about products including the product banner URL etc. Below mentioned is the description of all the columns of the Product Meta Table.</p>
+<p></p>
+<table class="table table-border">
+<tbody>
+<tr>
+<td class="bold">Id</td>
+<td>The unique id to identify the product meta.</td>
+</tr>
+<tr>
+<td class="bold">Product Id</td>
+<td>The product id to identify the parent product.</td>
+</tr>
+<tr>
+<td class="bold">Key</td>
+<td>The key identifying the meta.</td>
+</tr>
+<tr>
+<td class="bold">Content</td>
+<td>The column used to store the product metadata.</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p>The Product Meta Table with the appropriate constraints is as shown below.</p>
+<p></p>
+<pre>CREATE TABLE `inventory`.`product_meta` (<br>  `id` BIGINT NOT NULL AUTO_INCREMENT,<br>  `productId` BIGINT NOT NULL,<br>  `key` VARCHAR(50) NOT NULL,<br>  `content` TEXT NULL DEFAULT NULL,<br>  PRIMARY KEY (`id`),<br>  INDEX `idx_meta_product` (`productId` ASC),<br>  UNIQUE INDEX `uq_product_meta` (`productId` ASC, `key` ASC),<br>  CONSTRAINT `fk_meta_product`<br>    FOREIGN KEY (`productId`)<br>    REFERENCES `inventory`.`product` (`id`)<br>    ON DELETE NO ACTION<br>    ON UPDATE NO ACTION)<br>ENGINE = InnoDB;</pre>
+<p></p>
+<h3>Category Table and Product Category Table</h3>
+<p></p>
+<p>In this section, we will design the <strong>Category Table</strong> and <strong>Product Category Table</strong> to store the product categories and their mappings. Below mentioned is the description of all the columns of the Category Table.</p>
+<p></p>
+<table class="table table-border">
+<tbody>
+<tr>
+<td class="bold">Id</td>
+<td>The unique id to identify the category.</td>
+</tr>
+<tr>
+<td class="bold">Parent Id</td>
+<td>The parent id to identify the parent category.</td>
+</tr>
+<tr>
+<td class="bold">Title</td>
+<td>The category title.</td>
+</tr>
+<tr>
+<td class="bold">Meta Title</td>
+<td>The meta title to be used for browser title and SEO.</td>
+</tr>
+<tr>
+<td class="bold">Slug</td>
+<td>The category slug to form the URL.</td>
+</tr>
+<tr>
+<td class="bold">Content</td>
+<td>The column used to store the category details.</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p>The Category Table with the appropriate constraints is as shown below.</p>
+<p></p>
+<pre>CREATE TABLE `inventory`.`category` (<br>  `id` BIGINT NOT NULL AUTO_INCREMENT,<br>  `parentId` BIGINT NULL DEFAULT NULL,<br>  `title` VARCHAR(75) NOT NULL,<br>  `metaTitle` VARCHAR(100) NULL DEFAULT NULL,<br>  `slug` VARCHAR(100) NOT NULL,<br>  `content` TEXT NULL DEFAULT NULL,<br>  PRIMARY KEY (`id`));<br><br>ALTER TABLE `inventory`.`category` <br>ADD INDEX `idx_category_parent` (`parentId` ASC);<br>ALTER TABLE `inventory`.`category` <br>ADD CONSTRAINT `fk_category_parent`<br>  FOREIGN KEY (`parentId`)<br>  REFERENCES `inventory`.`category` (`id`)<br>  ON DELETE NO ACTION<br>  ON UPDATE NO ACTION;</pre>
+<p></p>
+<p>Below mentioned is the description of all the columns of the Product Category Table.</p>
+<p></p>
+<table class="table table-border">
+<tbody>
+<tr>
+<td class="bold">Product Id</td>
+<td>The product id to identify the product.</td>
+</tr>
+<tr>
+<td class="bold">Category Id</td>
+<td>The category id to identify the category.</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p>The Product Category Table with the appropriate constraints is as shown below.</p>
+<p></p>
+<pre>CREATE TABLE `inventory`.`product_category` (<br>  `productId` BIGINT NOT NULL,<br>  `categoryId` BIGINT NOT NULL,<br>  PRIMARY KEY (`productId`, `categoryId`),<br>  INDEX `idx_pc_category` (`categoryId` ASC),<br>  INDEX `idx_pc_product` (`productId` ASC),<br>  CONSTRAINT `fk_pc_product`<br>    FOREIGN KEY (`productId`)<br>    REFERENCES `inventory`.`product` (`id`)<br>    ON DELETE NO ACTION<br>    ON UPDATE NO ACTION,<br>  CONSTRAINT `fk_pc_category`<br>    FOREIGN KEY (`categoryId`)<br>    REFERENCES `inventory`.`category` (`id`)<br>    ON DELETE NO ACTION<br>    ON UPDATE NO ACTION);</pre>
+<p></p>
+<p></p>
+<h3>Brand Table</h3>
+<p></p>
+<p>In this section, we will design the <strong>Brand Table</strong> to store the brand data. Below mentioned is the description of all the columns of the Brand Table.</p>
+<p></p>
+<table class="table table-border">
+<tbody>
+<tr>
+<td class="bold">Id</td>
+<td>The unique id to identify the brand.</td>
+</tr>
+<tr>
+<td class="bold">Title</td>
+<td>The brand title to be displayed on the Inventory.</td>
+</tr>
+<tr>
+<td class="bold">Summary</td>
+<td>The summary mentions the key highlights.</td>
+</tr>
+<tr>
+<td class="bold">Created At</td>
+<td>It stores the date and time at which the product is created.</td>
+</tr>
+<tr>
+<td class="bold">Updated At</td>
+<td>It stores the date and time at which the product is updated.</td>
+</tr>
+<tr>
+<td class="bold">Content</td>
+<td>The column used to store the additional details of the brand.</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p>The Brand Table with the appropriate constraints is shown below.</p>
+<p></p>
+<pre>CREATE TABLE `inventory`.`brand` (<br>  `id` BIGINT NOT NULL AUTO_INCREMENT,<br>  `title` VARCHAR(75) NOT NULL,<br>  `summary` TINYTEXT NULL,<br>  `createdAt` DATETIME NOT NULL,<br>  `updatedAt` DATETIME NULL DEFAULT NULL,<br>  `content` TEXT NULL DEFAULT NULL,<br>  PRIMARY KEY (`id`) <br>);</pre>
+<p></p>
+<h3>Order Table Table</h3>
+<p></p>
+<p>This section provides the table to manage the inventory orders. The order can be associated with either Supplier or the Customer. Below mentioned is the description of all the columns of the Order Table.</p>
+<p></p>
+<table class="table table-border">
+<tbody>
+<tr>
+<td class="bold">Id</td>
+<td>The unique id to identify the order.</td>
+</tr>
+<tr>
+<td class="bold">User Id</td>
+<td>The user id to identify the Supplier or Customer associated with the order.</td>
+</tr>
+<tr>
+<td class="bold">Type</td>
+<td>The order type to distinguish among Purchase Order or Customer Order.</td>
+</tr>
+<tr>
+<td class="bold">Status</td>
+<td>The status of the order can be New, Checkout, Paid, Failed, Shipped, Delivered, Returned, and Complete.</td>
+</tr>
+<tr>
+<td class="bold">Sub Total</td>
+<td>The total price of the Order Items.</td>
+</tr>
+<tr>
+<td class="bold">Item Discount</td>
+<td>The total discount of the Order Items.</td>
+</tr>
+<tr>
+<td class="bold">Tax</td>
+<td>The tax on the Order Items.</td>
+</tr>
+<tr>
+<td class="bold">Shipping</td>
+<td>The shipping charges of the Order Items.</td>
+</tr>
+<tr>
+<td class="bold">Total</td>
+<td>The total price of the Order including tax and shipping. It excludes the items discount.</td>
+</tr>
+<tr>
+<td class="bold">Promo</td>
+<td>The promo code of the Order.</td>
+</tr>
+<tr>
+<td class="bold">Discount</td>
+<td>The total discount of the Order based on the promo code or store discount.</td>
+</tr>
+<tr>
+<td class="bold">Grand Total</td>
+<td>The grand total of the order to be paid by the buyer.</td>
+</tr>
+<tr>
+<td class="bold">Created At</td>
+<td>It stores the date and time at which the order is created.</td>
+</tr>
+<tr>
+<td class="bold">Updated At</td>
+<td>It stores the date and time at which the order is updated.</td>
+</tr>
+<tr>
+<td class="bold">Content</td>
+<td>The column used to store the additional details of the order.</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p>The Order Table with the appropriate constraints is as shown below.</p>
+<p></p>
+<pre>CREATE TABLE `inventory`.`order` (<br>  `id` BIGINT NOT NULL AUTO_INCREMENT,<br>  `userId` BIGINT NOT NULL,<br>  `type` SMALLINT(6) NOT NULL DEFAULT 0,<br>  `status` SMALLINT(6) NOT NULL DEFAULT 0,<br>  `subTotal` FLOAT NOT NULL DEFAULT 0,<br>  `itemDiscount` FLOAT NOT NULL DEFAULT 0,<br>  `tax` FLOAT NOT NULL DEFAULT 0,<br>  `shipping` FLOAT NOT NULL DEFAULT 0,<br>  `total` FLOAT NOT NULL DEFAULT 0,<br>  `promo` VARCHAR(50) NULL DEFAULT NULL,<br>  `discount` FLOAT NOT NULL DEFAULT 0,<br>  `grandTotal` FLOAT NOT NULL DEFAULT 0,<br>  `createdAt` DATETIME NOT NULL,<br>  `updatedAt` DATETIME NULL DEFAULT NULL,<br>  `content` TEXT NULL DEFAULT NULL,<br>  PRIMARY KEY (`id`),<br>  INDEX `idx_order_user` (`userId` ASC),<br>  CONSTRAINT `fk_order_user`<br>    FOREIGN KEY (`userId`)<br>    REFERENCES `inventory`.`user` (`id`)<br>    ON DELETE NO ACTION<br>    ON UPDATE NO ACTION);</pre>
+<p></p>
+<h3>Address Table</h3>
+<p></p>
+<p>This section provides the table to manage the address of either the user or the order. The user address can be used to store the address associated with the user. The order address can be used to store the delivery address for the home delivery orders. Below mentioned is the description of all the columns of the Address Table.</p>
+<p></p>
+<table class="table table-border">
+<tbody>
+<tr>
+<td class="bold">Id</td>
+<td>The unique id to identify the address.</td>
+</tr>
+<tr>
+<td class="bold">User Id</td>
+<td>The user id to identify the user associated with the address.</td>
+</tr>
+<tr>
+<td class="bold">Order Id</td>
+<td>The order id to identify the order associated with the address.</td>
+</tr>
+<tr>
+<td class="bold">First Name</td>
+<td>The first name of the user.</td>
+</tr>
+<tr>
+<td class="bold">Middle Name</td>
+<td>The middle name of the user.</td>
+</tr>
+<tr>
+<td class="bold">Last Name</td>
+<td>The last name of the user.</td>
+</tr>
+<tr>
+<td class="bold">Mobile</td>
+<td>The mobile number of the user.</td>
+</tr>
+<tr>
+<td class="bold">Email</td>
+<td>The email of the user.</td>
+</tr>
+<tr>
+<td class="bold">Line 1</td>
+<td>The first line to store address.</td>
+</tr>
+<tr>
+<td class="bold">Line 2</td>
+<td>The second line to store address.</td>
+</tr>
+<tr>
+<td class="bold">City</td>
+<td>The city of the address.</td>
+</tr>
+<tr>
+<td class="bold">Province</td>
+<td>The province of the address.</td>
+</tr>
+<tr>
+<td class="bold">Country</td>
+<td>The country of the address.</td>
+</tr>
+<tr>
+<td class="bold">Created At</td>
+<td>It stores the date and time at which the order is created.</td>
+</tr>
+<tr>
+<td class="bold">Updated At</td>
+<td>It stores the date and time at which the order is updated.</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p>The Address Table with the appropriate constraints is as shown below.</p>
+<p></p>
+<pre>CREATE TABLE `inventory`.`address` (<br>  `id` BIGINT NOT NULL AUTO_INCREMENT,<br>  `userId` BIGINT NULL DEFAULT NULL,<br>  `orderId` BIGINT NULL DEFAULT NULL,<br>  `firstName` VARCHAR(50) NULL DEFAULT NULL,<br>  `middleName` VARCHAR(50) NULL DEFAULT NULL,<br>  `lastName` VARCHAR(50) NULL DEFAULT NULL,<br>  `mobile` VARCHAR(15) NULL,<br>  `email` VARCHAR(50) NULL,<br>  `line1` VARCHAR(50) NULL DEFAULT NULL,<br>  `line2` VARCHAR(50) NULL DEFAULT NULL,<br>  `city` VARCHAR(50) NULL DEFAULT NULL,<br>  `province` VARCHAR(50) NULL DEFAULT NULL,<br>  `country` VARCHAR(50) NULL DEFAULT NULL,<br>  `createdAt` DATETIME NOT NULL,<br>  `updatedAt` DATETIME NULL DEFAULT NULL,<br>  PRIMARY KEY (`id`),<br>  INDEX `idx_address_user` (`userId` ASC),<br>  CONSTRAINT `fk_address_user`<br>    FOREIGN KEY (`userId`)<br>    REFERENCES `inventory`.`user` (`id`)<br>    ON DELETE NO ACTION<br>    ON UPDATE NO ACTION);<br><br>ALTER TABLE `inventory`.`address` <br>ADD INDEX `idx_address_order` (`orderId` ASC);<br>ALTER TABLE `inventory`.`address` <br>ADD CONSTRAINT `fk_address_order`<br>  FOREIGN KEY (`orderId`)<br>  REFERENCES `inventory`.`order` (`id`)<br>  ON DELETE NO ACTION<br>  ON UPDATE NO ACTION;</pre>
+<p></p>
+<h3>Item Table</h3>
+<p></p>
+<p>In this section, we will design the <strong>Item</strong><strong> Table</strong> to store the item details. The Item represents the items stocked in the inventory and purchased from the suppliers. Below mentioned is the description of all the columns of the Item Table.</p>
+<p></p>
+<table class="table table-border">
+<tbody>
+<tr>
+<td class="bold">Id</td>
+<td>The unique id to identify the item.</td>
+</tr>
+<tr>
+<td class="bold">Product Id</td>
+<td>The product id to identify the product associated with the inventory item.</td>
+</tr>
+<tr>
+<td class="bold">Brand Id</td>
+<td>The brand id to identify the brand associated with the inventory item.</td>
+</tr>
+<tr>
+<td class="bold">Supplier Id</td>
+<td>The supplier id to identify the supplier associated with the inventory item.</td>
+</tr>
+<tr>
+<td class="bold">Order Id</td>
+<td>The order id to identify the order associated with the inventory item.</td>
+</tr>
+<tr>
+<td class="bold">Created By</td>
+<td>The user id to identify the user who added the inventory item.</td>
+</tr>
+<tr>
+<td class="bold">Updated By</td>
+<td>The user id to identify the user who updated the inventory item.</td>
+</tr>
+<tr>
+<td class="bold">Stock Keeping Unit</td>
+<td>The id to identify the item on stock.</td>
+</tr>
+<tr>
+<td class="bold">Maximum Retail Price</td>
+<td>The printed price of the product associated with the item.</td>
+</tr>
+<tr>
+<td class="bold">Discount</td>
+<td>The discount is given by the supplier.</td>
+</tr>
+<tr>
+<td class="bold">Price</td>
+<td>The price at which the product was purchased.</td>
+</tr>
+<tr>
+<td class="bold">Quantity</td>
+<td>The total quantity received at the inventory.</td>
+</tr>
+<tr>
+<td class="bold">Sold</td>
+<td>The total quantity sold to the customers.</td>
+</tr>
+<tr>
+<td class="bold">Available</td>
+<td>The quantity that is available on the stock.</td>
+</tr>
+<tr>
+<td class="bold">Defective</td>
+<td>The total defective items either received at the inventory or returned by the customers.</td>
+</tr>
+<tr>
+<td class="bold">Created At</td>
+<td>It stores the date and time at which the order is created.</td>
+</tr>
+<tr>
+<td class="bold">Updated At</td>
+<td>It stores the date and time at which the order is updated.</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p>The Item Table with the appropriate constraints is as shown below.</p>
+<p></p>
+<pre>CREATE TABLE `inventory`.`item` (<br>  `id` BIGINT NOT NULL AUTO_INCREMENT,<br>  `productId` BIGINT NOT NULL,<br>  `brandId` BIGINT NOT NULL,<br>  `supplierId` BIGINT NOT NULL,<br>  `orderId` BIGINT NOT NULL,<br>  `sku` VARCHAR(100) NOT NULL,<br>  `mrp` FLOAT NOT NULL DEFAULT 0,<br>  `discount` FLOAT NOT NULL DEFAULT 0,<br>  `price` FLOAT NOT NULL DEFAULT 0,<br>  `quantity` SMALLINT(6) NOT NULL DEFAULT 0,<br>  `sold` SMALLINT(6) NOT NULL DEFAULT 0,<br>  `available` SMALLINT(6) NOT NULL DEFAULT 0,<br>  `defective` SMALLINT(6) NOT NULL DEFAULT 0,<br>  `createdBy` BIGINT NOT NULL,<br>  `updatedBy` BIGINT DEFAULT NULL,<br>  `createdAt` DATETIME NOT NULL,<br>  `updatedAt` DATETIME NULL DEFAULT NULL,<br>  PRIMARY KEY (`id`),<br>  INDEX `idx_item_product` (`productId` ASC),<br>  CONSTRAINT `fk_item_product`<br>    FOREIGN KEY (`productId`)<br>    REFERENCES `inventory`.`product` (`id`)<br>    ON DELETE NO ACTION<br>    ON UPDATE NO ACTION);<br><br>ALTER TABLE `inventory`.`item` <br>ADD INDEX `idx_item_brand` (`brandId` ASC);<br>ALTER TABLE `inventory`.`item` <br>ADD CONSTRAINT `fk_item_brand`<br>  FOREIGN KEY (`brandId`)<br>  REFERENCES `inventory`.`brand` (`id`)<br>  ON DELETE NO ACTION<br>  ON UPDATE NO ACTION;<br><br>ALTER TABLE `inventory`.`item` <br>ADD INDEX `idx_item_user` (`supplierId` ASC);<br>ALTER TABLE `inventory`.`item` <br>ADD CONSTRAINT `fk_item_user`<br>  FOREIGN KEY (`supplierId`)<br>  REFERENCES `inventory`.`user` (`id`)<br>  ON DELETE NO ACTION<br>  ON UPDATE NO ACTION;<br><br>ALTER TABLE `inventory`.`item` <br>ADD INDEX `idx_item_order` (`orderId` ASC);<br>ALTER TABLE `inventory`.`item` <br>ADD CONSTRAINT `fk_item_order`<br>  FOREIGN KEY (`orderId`)<br>  REFERENCES `inventory`.`order` (`id`)<br>  ON DELETE NO ACTION<br>  ON UPDATE NO ACTION;</pre>
+<p></p>
+<h3>Order Item Table</h3>
+<p></p>
+<p>This section provides the table to manage the order items purchased by the customers. Below mentioned is the description of all the columns of the Order Item Table.</p>
+<p></p>
+<table class="table table-border">
+<tbody>
+<tr>
+<td class="bold">Id</td>
+<td>The unique id to identify the ordered item.</td>
+</tr>
+<tr>
+<td class="bold">Product Id</td>
+<td>The product id to identify the product associated with the ordered item.</td>
+</tr>
+<tr>
+<td class="bold">Item Id</td>
+<td>The item id to identify the item associated with the ordered item.</td>
+</tr>
+<tr>
+<td class="bold">Order Id</td>
+<td>The order id to identify the order associated with the ordered item.</td>
+</tr>
+<tr>
+<td class="bold">SKU</td>
+<td>The SKU of the product while purchasing it.</td>
+</tr>
+<tr>
+<td class="bold">Price</td>
+<td>The price of the product while purchasing it.</td>
+</tr>
+<tr>
+<td class="bold">Discount</td>
+<td>The discount of the product while purchasing it.</td>
+</tr>
+<tr>
+<td class="bold">Quantity</td>
+<td>The quantity of the product selected by the user.</td>
+</tr>
+<tr>
+<td class="bold">Created At</td>
+<td>It stores the date and time at which the ordered item is created.</td>
+</tr>
+<tr>
+<td class="bold">Updated At</td>
+<td>It stores the date and time at which the ordered item is updated.</td>
+</tr>
+<tr>
+<td class="bold">Content</td>
+<td>The column used to store the additional details of the ordered item.</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p>The Order Item Table with the appropriate constraints is as shown below.</p>
+<p></p>
+<pre>CREATE TABLE `inventory`.`order_item` (<br>  `id` BIGINT NOT NULL AUTO_INCREMENT,<br>  `productId` BIGINT NOT NULL,<br>  `itemId` BIGINT NOT NULL,<br>  `orderId` BIGINT NOT NULL,<br>  `sku` VARCHAR(100) NOT NULL,<br>  `price` FLOAT NOT NULL DEFAULT 0,<br>  `discount` FLOAT NOT NULL DEFAULT 0,<br>  `quantity` SMALLINT(6) NOT NULL DEFAULT 0,<br>  `createdAt` DATETIME NOT NULL,<br>  `updatedAt` DATETIME NULL DEFAULT NULL,<br>  `content` TEXT NULL DEFAULT NULL,<br>  PRIMARY KEY (`id`),<br>  INDEX `idx_order_item_product` (`productId` ASC),<br>  CONSTRAINT `fk_order_item_product`<br>    FOREIGN KEY (`productId`)<br>    REFERENCES `inventory`.`product` (`id`)<br>    ON DELETE NO ACTION<br>    ON UPDATE NO ACTION);<br><br>ALTER TABLE `inventory`.`order_item` <br>ADD INDEX `idx_order_item_item` (`itemId` ASC);<br>ALTER TABLE `inventory`.`order_item` <br>ADD CONSTRAINT `fk_order_item_item`<br>  FOREIGN KEY (`itemId`)<br>  REFERENCES `inventory`.`item` (`id`)<br>  ON DELETE NO ACTION<br>  ON UPDATE NO ACTION;<br><br>ALTER TABLE `inventory`.`order_item` <br>ADD INDEX `idx_order_item_order` (`orderId` ASC);<br>ALTER TABLE `inventory`.`order_item` <br>ADD CONSTRAINT `fk_order_item_order`<br>  FOREIGN KEY (`orderId`)<br>  REFERENCES `inventory`.`order` (`id`)<br>  ON DELETE NO ACTION<br>  ON UPDATE NO ACTION;</pre>
+<p></p>
+<h3>Transaction Table</h3>
+<p></p>
+<p>We also need a transaction table to track the order payments made by the buyer and for bookkeeping. We can also use the same table to record the partial or full refund of the order. Below mentioned is the description of all the columns of the Transaction Table.</p>
+<p></p>
+<table class="table table-border">
+<tbody>
+<tr>
+<td class="bold">Id</td>
+<td>The unique id to identify the transaction.</td>
+</tr>
+<tr>
+<td class="bold">User Id</td>
+<td>The user id to identify the user associated with the transaction.</td>
+</tr>
+<tr>
+<td class="bold">Order Id</td>
+<td>The order id to identify the order associated with the transaction.</td>
+</tr>
+<tr>
+<td class="bold">Code</td>
+<td>The payment id provided by the payment gateway.</td>
+</tr>
+<tr>
+<td class="bold">Type</td>
+<td>The type of order transaction can be either Credit or Debit.</td>
+</tr>
+<tr>
+<td class="bold">Mode</td>
+<td>The mode of the order transaction can be Offline, Cash On Delivery, Cheque, Draft, Wired, and Online.</td>
+</tr>
+<tr>
+<td class="bold">Status</td>
+<td>The status of the order transaction can be New, Cancelled, Failed, Pending, Declined, Rejected, and Success.</td>
+</tr>
+<tr>
+<td class="bold">Created At</td>
+<td>It stores the date and time at which the order transaction is created.</td>
+</tr>
+<tr>
+<td class="bold">Updated At</td>
+<td>It stores the date and time at which the order transaction is updated.</td>
+</tr>
+<tr>
+<td class="bold">Content</td>
+<td>The column used to store the additional details of the transaction.</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p>The Transaction Table with the appropriate constraints is as shown below.</p>
+<p></p>
+<pre>CREATE TABLE `inventory`.`transaction` (<br>  `id` BIGINT NOT NULL AUTO_INCREMENT,<br>  `userId` BIGINT NOT NULL,<br>  `orderId` BIGINT NOT NULL,<br>  `code` VARCHAR(100) NOT NULL,<br>  `type` SMALLINT(6) NOT NULL DEFAULT 0,<br>  `mode` SMALLINT(6) NOT NULL DEFAULT 0,<br>  `status` SMALLINT(6) NOT NULL DEFAULT 0,<br>  `createdAt` DATETIME NOT NULL,<br>  `updatedAt` DATETIME NULL DEFAULT NULL,<br>  `content` TEXT NULL DEFAULT NULL,<br>  PRIMARY KEY (`id`),<br>  INDEX `idx_transaction_user` (`userId` ASC),<br>  CONSTRAINT `fk_transaction_user`<br>    FOREIGN KEY (`userId`)<br>    REFERENCES `inventory`.`user` (`id`)<br>    ON DELETE NO ACTION<br>    ON UPDATE NO ACTION);<br><br>ALTER TABLE `inventory`.`transaction` <br>ADD INDEX `idx_transaction_order` (`orderId` ASC);<br>ALTER TABLE `inventory`.`transaction` <br>ADD CONSTRAINT `fk_transaction_order`<br>  FOREIGN KEY (`orderId`)<br>  REFERENCES `inventory`.`order` (`id`)<br>  ON DELETE NO ACTION<br>  ON UPDATE NO ACTION;</pre>
+<p></p>
+<h3>Summary</h3>
+<p></p>
+<p>In this tutorial, we have discussed the database design of an Inventory Management System to store the users and manage product inventory. It also provided the database design to manage the purchase orders and customer orders.</p>
+<p></p>
+<p>You may submit your comments to join the discussion. You may also be interested in designing the database of the <a href="https://mysql.tutorials24x7.com/blog/guide-to-design-a-database-for-blog-management-in-mysql" title="Guide To Design Database For Blog Management In MySQL">Blog</a> and <a href="https://mysql.tutorials24x7.com/blog/guide-to-design-database-for-poll-in-mysql" title="Guide To Design Database For Poll &amp; Survey In MySQL">Poll &amp; Survey</a> applications. The complete database schema is also available on <a title="Inventory Management Database" href="https://github.com/tutorials24x7/inventory-management-database-mysql" target="_blank">GitHub</a>.</p></div>
+						<!-- <div class="page-content-buffer"></div> -->
+			</div>
+						<div class="page-content-buffer page-content-comments">
+		<div class="comment-submit"><div class="box-content-wrap">
+			<div class="box-header-wrap">
+			<div class="box-header">
+				<div class="box-header-title align align-center padding padding-small-v">Write a Comment</div>
+			</div>
+		</div>
+		<div class="box-data">
+		<form class="form" cmt-app="core" cmt-controller="comment" cmt-action="create" action="https://mysql.tutorials24x7.com/blog/cms/post/submit-comment?slug=guide-to-design-database-for-inventory-management-system-in-mysql&amp;type=blog">
+			<div class="spinner max-area-cover">
+				<div class="valign-center cmti cmti-2x cmti-spinner-1 spin"></div>
+			</div>
+			<div class="row max-cols-100">
+							<div class="colf colf15x7">
+					<div class="clear">
+												<input type="text" name="Comment[name]" placeholder="Name">
+						<span class="error" cmt-error="Comment[name]"></span>
+					</div>
+					<div class="clear">
+												<input type="text" name="Comment[email]" placeholder="Email">
+						<span class="error" cmt-error="Comment[email]"></span>
+					</div>
+					<div class="clear">
+												<input type="text" name="Comment[websiteUrl]" placeholder="Website Link">
+						<span class="error" cmt-error="Comment[websiteUrl]"></span>
+					</div>
+									</div>
+				<div class="colf colf15"></div>
+				<div class="colf colf15x7">
+					<div class="clear">
+												<textarea name="Comment[content]" rows="4" placeholder="Write here..."></textarea>
+						<span class="error" cmt-error="Comment[content]"></span>
+					</div>
+											<div class="captcha-wrap clear">
+							<img id="w0-image" src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/captcha" alt=""> <input type="text" id="w0" name="Comment[captcha]" placeholder="Captcha Key*">							<div class="info margin margin-small-v">Click the captcha image to get new code.</div>
+							<span class="error" cmt-error="Comment[captcha]"></span>
+						</div>
+									</div>
+						</div>
+			<div class="align align-right">
+				<input type="submit" class="frm-element-medium" value="Submit">
+			</div>
+			<div class="margin margin-small-v">
+				<div class="message success"></div>
+				<div class="message warning"></div>
+				<div class="message error"></div>
+			</div>
+		</form>
+	</div>
+</div>
+</div>			</div>
+	<div class="page-content-buffer page-content-disqus">
+		<div class="h4">Discussion Forum by DISQUS</div><hr>
+		<div class="filler-height"></div>
+		<div id="disqus_recommendations" style="margin-bottom: 12px;"><iframe id="dsq-app1197" name="dsq-app1197" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" width="100%" src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/saved_resource.html" style="width: 100% !important; border: none !important; overflow: hidden !important; height: 240px !important; display: inline !important; box-sizing: border-box !important;" horizontalscrolling="no" verticalscrolling="no"></iframe></div><div id="disqus_thread" class="margin margin-small-v"><iframe id="dsq-app5937" name="dsq-app5937" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" width="100%" src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/saved_resource(1).html" style="width: 1px !important; min-width: 100% !important; border: none !important; overflow: hidden !important; height: 532px !important;" horizontalscrolling="no" verticalscrolling="no"></iframe></div>
+	</div>
+				</div>
+									<div class="colf colf12x3">
+							<div class="page-sidebar-wrap page-sidebar-wrap-right">
+		<div class="sidebar sidebar-basic sidebar-vertical obj-sidebar sidebar-vsidebar sidebar-post-right">
+
+
+<div class="sidebar-content-wrap">
+			<div class="sidebar-content ">
+										
+	<div class="sidebar-widget-wrap row">
+		<div class="widget widget-basic widget-default obj-widget widget-google-small-1">
+
+
+<div class="widget-content-wrap">
+			<div class="widget-content ">
+										
+
+	<div class="widget-content-raw"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9075166357650375" data-ad-slot="6184770847" data-ad-format="auto" data-full-width-responsive="true"></ins>
+ <script>
+ (adsbygoogle = window.adsbygoogle || []).push({});
+ </script></div>
+
+<!-- <div class="widget-content-buffer"></div> -->
+
+	</div>
+</div>
+</div><div class="widget widget-basic widget-card widget-card-model widget-card-post widget-card-recent obj-widget widget-post-card widget-recent-site-posts">
+
+<div class="widget-content-wrap">
+		<div class="widget-header-wrap">
+		<div class="widget-header">
+													<div class="widget-header-title">Recent Posts</div>
+					</div>
+	</div>
+		<div class="widget-content ">
+										
+<!-- <div class="widget-content-buffer"></div> -->
+
+<div class="widget-content-buffer">
+			<div class="card-model-wrap">
+			<div class="card card-default card-model card-post"><div class="card-content-wrap clearfix card-content-split">
+			<div class="card-header">
+			<div class="card-bkg">
+				<img class="fluid" src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/store-images-in-mysql-database-banner.jpg" title="How to store pictures in MySQL database">
+			</div>
+		</div>
+		<div class="card-content">
+		<div class="card-content-title">
+			<a href="https://mysql.tutorials24x7.com/blog/how-to-store-pictures-in-mysql-database">How to store pictures in MySQL database</a>
+		</div>
+	</div>
+</div>
+</div><div class="card card-default card-model card-post"><div class="card-content-wrap clearfix card-content-split">
+			<div class="card-header">
+			<div class="card-bkg">
+				<img class="fluid" src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/tutorials24x7-mysql-task-manager-database-design-banner.jpg" title="Guide To Design Database For Task Manager In MySQL">
+			</div>
+		</div>
+		<div class="card-content">
+		<div class="card-content-title">
+			<a href="https://mysql.tutorials24x7.com/blog/guide-to-design-database-for-task-manager-in-mysql">Guide To Design Database For Task Manager In MySQL</a>
+		</div>
+	</div>
+</div>
+</div><div class="card card-default card-model card-post"><div class="card-content-wrap clearfix card-content-split">
+			<div class="card-header">
+			<div class="card-bkg">
+				<img class="fluid" src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/tutorials24x7-mysql-social-network-database-design-banner.jpg" title="Guide To Design Database For Social Network System In MySQL">
+			</div>
+		</div>
+		<div class="card-content">
+		<div class="card-content-title">
+			<a href="https://mysql.tutorials24x7.com/blog/guide-to-design-database-for-social-network-system-in-mysql">Guide To Design Database For Social Network System In MySQL</a>
+		</div>
+	</div>
+</div>
+</div><div class="card card-default card-model card-post"><div class="card-content-wrap clearfix card-content-split">
+			<div class="card-header">
+			<div class="card-bkg">
+				<img class="fluid" src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/tutorials24x7-employee-management-database-banner.jpg" title="Guide To Design Database For Employee Management System In MySQL">
+			</div>
+		</div>
+		<div class="card-content">
+		<div class="card-content-title">
+			<a href="https://mysql.tutorials24x7.com/blog/guide-to-design-database-for-employee-management-system-in-mysql">Guide To Design Database For Employee Management System In MySQL</a>
+		</div>
+	</div>
+</div>
+</div><div class="card card-default card-model card-post"><div class="card-content-wrap clearfix card-content-split">
+			<div class="card-header">
+			<div class="card-bkg">
+				<img class="fluid" src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/tutorials24x7-notification-management-database-banner.jpg" title="Guide To Design Database For Notifications In MySQL">
+			</div>
+		</div>
+		<div class="card-content">
+		<div class="card-content-title">
+			<a href="https://mysql.tutorials24x7.com/blog/guide-to-design-database-for-notifications-in-mysql">Guide To Design Database For Notifications In MySQL</a>
+		</div>
+	</div>
+</div>
+</div>		</div>
+					</div>
+
+	</div>
+</div>
+</div><div class="widget fixme obj-widget widget-default widget-google-small-2" style="position: fixed; top: 120px;">
+
+
+<div class="widget-content-wrap">
+			<div class="widget-content ">
+										
+
+	<div class="widget-content-raw"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9075166357650375" data-ad-slot="6359567647" data-ad-format="auto" data-full-width-responsive="true"></ins>
+ <script>
+ (adsbygoogle = window.adsbygoogle || []).push({});
+ </script></div>
+
+<!-- <div class="widget-content-buffer"></div> -->
+
+	</div>
+</div>
+<script>
+	window.onload = function(){
+var fixmeTop = jQuery('.fixme').offset().top;
+
+jQuery(window).scroll(function() {
+    var currentScroll = jQuery(window).scrollTop();
+    if (currentScroll >= fixmeTop) {
+        jQuery('.fixme').css({
+            position: 'fixed',
+              top: '120px'
+        });
+    } else {
+        jQuery('.fixme').css({
+            position: 'static'
+        });
+    }
+});
+}</script>
+</div>	</div>
+	</div>
+</div>
+</div>	</div>
+					</div>
+							</div>
+										<div class="page-sidebar-wrap page-sidebar-wrap-bottom">
+					<div class="sidebar sidebar-basic sidebar-horizontal obj-sidebar sidebar-hsidebar sidebar-post-bottom">
+
+
+<div class="sidebar-content-wrap">
+			<div class="sidebar-content ">
+										
+	<div class="sidebar-widget-wrap row">
+			</div>
+	</div>
+</div>
+</div>			</div>
+			</div>
+</div>
+	        	</div>
+	        </div>
+        </div>
+        <footer class="footer footer-basic footer-main">
+	<div class="footer-content row row-xlarge max-cols-100 col-filler-wrap">
+		<div class="colf colf12x8">
+			<div class="row max-cols-50">
+				<div class="footer-col col col12x6">
+					<div class="h5 col-header">Links</div>
+					<ul id="menu-links" class="nav"><li><a href="https://mysql.tutorials24x7.com/blog/search">Blog</a></li>
+<li><a href="https://www.tutorials24x7.com/contact-us" target="_blank">Contact Us</a></li>
+<li><a href="https://www.tutorials24x7.com/feedback" target="_blank">Feedback</a></li>
+<li><a href="https://www.tutorials24x7.com/testimonial" target="_blank">Testimonial</a></li></ul>				</div>
+				<div class="footer-col col col12x6">
+					<div class="h5 col-header">Featured Posts</div>
+					<div class="widget widget-page"><div class="blog-post">
+<div class="bkg-element-small" title="How To Install PHP On Windows">
+	<a href="https://mysql.tutorials24x7.com/blog/how-to-install-php-8-on-windows" class="blog-post">
+		<img src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/0-install-php-8-on-windows-10-banner-medium.jpg">
+	</a>
+</div>
+</div><div class="blog-post">
+<div class="bkg-element-small" title="How To Install Ubuntu 20.04 LTS On Windows Using VMware Workstation Player">
+	<a href="https://mysql.tutorials24x7.com/blog/how-to-install-ubuntu-20-04-lts-on-windows-using-vmware-workstation-player" class="blog-post">
+		<img src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/tutorials24x7-install-ubuntu-on-windows-vmware-banner-medium.jpg">
+	</a>
+</div>
+</div><div class="blog-post">
+<div class="bkg-element-small" title="How To Make Bootable USB Of Ubuntu 20.04 LTS On Ubuntu">
+	<a href="https://mysql.tutorials24x7.com/blog/how-to-make-bootable-usb-of-ubuntu-20-04-lts-on-ubuntu" class="blog-post">
+		<img src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/tutorials24x7-bootable-usb-ubuntu-banner-medium.jpg">
+	</a>
+</div>
+</div><div class="blog-post">
+<div class="bkg-element-small" title="Difference Between Interface Vs Abstract Class In Java">
+	<a href="https://mysql.tutorials24x7.com/blog/interface-vs-abstract-class-in-java" class="blog-post">
+		<img src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/interface-vs-abstract-class-java-medium.jpg">
+	</a>
+</div>
+</div><div class="blog-post">
+<div class="bkg-element-small" title="How To Install IntelliJ IDEA for Java on Windows">
+	<a href="https://mysql.tutorials24x7.com/blog/how-to-install-intellij-idea-for-java-on-windows" class="blog-post">
+		<img src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/tutorials24x7-install-intellij-idead-for-java-on-windows-10-banner-medium.jpg">
+	</a>
+</div>
+</div><div class="blog-post">
+<div class="bkg-element-small" title="How To Install VSCode For Java On Windows">
+	<a href="https://mysql.tutorials24x7.com/blog/how-to-install-visual-studio-code-for-java-on-windows" class="blog-post">
+		<img src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/tutorials24x7-install-visual-studio-code-vscode-for-java-on-windows-banner-medium.jpg">
+	</a>
+</div>
+</div></div>				</div>
+			</div>
+		</div>
+		<div class="footer-col col col12x4">
+			<div class="h5 col-header">Newsletter</div>
+			<div>Sign Up to receive updates from us.</div>
+			<div class="footer-newsletter-wrap"><form class="form row max-cols-100" cmt-app="core" cmt-controller="default" cmt-action="default" action="https://mysql.tutorials24x7.com/blog/newsletter/site/sign-up">
+	<div class="max-area-cover spinner">
+		<div class="valign-center cmti cmti-2x cmti-spinner-1 spin"></div>
+	</div>
+
+	<div class="frm-actions">
+		<input class="rounded rounded-left rounded-left-small" type="text" name="SignUpForm[email]" placeholder="Email *">
+		<input class="submit rounded rounded-right rounded-right-small" type="submit" name="submit" value="Join Us">
+	</div>
+
+    <div class="frm-field padding padding-small-v">
+		<span class="error" cmt-error="SignUpForm[email]"></span>
+    </div>
+
+	<div class="message success"></div>
+	<div class="message warning"></div>
+	<div class="message error"></div>
+	<div class="filler-height"> </div>
+</form>
+</div>		</div>
+	</div>
+</footer>
+<footer class="footer footer-copyright">
+	<div class="row row-xlarge padding padding-small-v align align-center">
+		Copyright © 2017 - 2021 Tutorials24x7. All Rights Reserved.
+	</div>
+</footer>
+
+<!-- Google Ads -->
+<script async="" src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/f.txt"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async="" src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/js"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-81806638-1');
+  setTimeout("ga('send','event','adjusted bounce rate','25 seconds')",25000);
+</script>
+
+<!-- Facebook Pixel Code -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1407078042794911');
+  fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1407078042794911&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Facebook Pixel Code -->
+<script>
+  fbq('track', 'ViewContent');
+</script>
+
+<!-- Matomo -->
+<script type="text/javascript">
+  var _paq = _paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//analytics.vcdevhub.com/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', '1']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<!-- End Matomo Code -->		<script>
+
+var disqus_config = function () {
+	this.page.url = 'https://mysql.tutorials24x7.com/blog/guide-to-design-database-for-inventory-management-system-in-mysql?amp=0';
+	this.page.identifier = 'guide-to-design-database-for-inventory-management-system-in-mysql'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://tutorials24x7.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <script src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/jquery.min.js.download"></script>
+<script src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/yii.js.download"></script>
+<script src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/yii.captcha.js.download"></script>
+<script src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/lzybtblg-20200426.js.download"></script>
+<script src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/cmnbtblg-20200426.js.download"></script>
+<script src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/pubbtblg-20200426.js.download"></script>
+<script>var siteUrl	= 'https://mysql.tutorials24x7.com/';
+					var ajaxUrl	= 'https://mysql.tutorials24x7.com/apix/';
+					var uploadUrl = 'https://www.tutorials24x7.com/uploads/';
+					var fileUploadUrl = 'https://mysql.tutorials24x7.com/apix/file/file-handler';</script>
+<script>jQuery(function ($) {
+jQuery('#w0-image').yiiCaptcha({"refreshUrl":"\/site\/captcha?refresh=1","hashKey":"yiiCaptcha\/core\/site\/captcha"});
+});</script>    
+
+<div id="cmt-el-timepicker" class="cmt-timepicker cmt-timepicker-basic" style="z-index: 100000;"></div><iframe style="display: none;" src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/saved_resource(2).html"></iframe><iframe style="display: none;" src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/saved_resource(3).html"></iframe><div id="fb-root" class=" fb_reset"><div style="position: absolute; top: -10000px; width: 0px; height: 0px;"><div></div></div></div><iframe frameborder="0" scrolling="no" style="background-color: transparent; border: 0px; display: none;" src="./Guide To Design Database For Inventory Management System In MySQL _ Tutorials24x7_files/saved_resource(4).html"></iframe><div id="GOOGLE_INPUT_CHEXT_FLAG" input="" input_stat="{&quot;tlang&quot;:true,&quot;tsbc&quot;:true,&quot;pun&quot;:true,&quot;mk&quot;:true,&quot;ss&quot;:true}" style="display: none;"></div></body></html>

@@ -1,0 +1,2 @@
+User-agent: Googlebot
+Disallow: https://kdjavafuncode.blogspot.com/p/student-mangement-system-aspnet.html

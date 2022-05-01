@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Cookies_Demo", ".", "{956DABAC-C12B-4001-998B-33E7007B803F}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
+		Debug.AspNetCompiler.VirtualPath = "/Cookies_Demo"
+		Debug.AspNetCompiler.PhysicalPath = "..\Cookies_Demo\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\Cookies_Demo\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/Cookies_Demo"
+		Release.AspNetCompiler.PhysicalPath = "..\Cookies_Demo\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\Cookies_Demo\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "1069"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{956DABAC-C12B-4001-998B-33E7007B803F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{956DABAC-C12B-4001-998B-33E7007B803F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

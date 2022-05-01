@@ -1,0 +1,13 @@
+//QRY = "SELECT * FROM "+ txt_CustID.Text ,txt_CustName.Text +;
+            //QRY += "" + txt_CustID.Text + ",";
+            //QRY += "'" + txt_CustName.Text + "',";
+            //QRY += "'" + txt_ADD.Text + "',";
+            //QRY += "'" + txt_ContNo.Text + "',";
+            //QRY += "'" + txt_Email.Text + "',";
+            //QRY += "'" + txt_Age.Text + "',";
+            //QRY += "'" + gen + "',";
+            //QRY += "" + txt_PolicyId.Text + ",";
+            //QRY += "'" + datePic.Value.ToShortDateString() + "',";
+            //QRY += "'" + txt_Relation.Text + "',";
+            //QRY += "'" + cmbPName.SelectedItem.ToString() + "'";
+            //QRY += ")";

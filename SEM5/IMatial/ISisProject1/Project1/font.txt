@@ -1,0 +1,22 @@
+insert form
+-----------------------
+font-style=Cambria
+font-size=15
+Backcolor=Teal
+fore color=White
+-------------------------
+edit-update  form
+------------------------
+font-style=Cambria
+font-size=12
+----------------------
+For search btn
+----------------------
+font-style = Wingdings 2
+____________________________
+gridview
+--------------------------------
+Dock:Fill
+RowHeaderVisible:False
+name:custgrdt
+SeectionMode:FullRowSelect

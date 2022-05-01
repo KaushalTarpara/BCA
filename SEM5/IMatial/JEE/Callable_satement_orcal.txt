@@ -1,0 +1,101 @@
+IN orcal
+
+Create Table Emp
+==========================
+create table emp
+(eno number(3),
+ename char(20),
+ebdat date,
+eage number(3),
+edept char(20),
+ecity char(20))
+/
+
+Create  Produre insertEMP
+=======================
+CREATE OR REPLACE PROCEDURE insertEMP
+   (
+   p_eno IN emp.eno%TYPE,
+   p_ename IN emp.ename%TYPE,
+   p_ebdat IN emp.ebdat%TYPE,
+   p_eage IN emp.eage%TYPE,
+    p_edept IN emp.edept%TYPE,
+     p_ecity IN emp.ecity%TYPE
+    )
+   IS
+  BEGIN
+   insert into emp(eno,ename,ebdat,eage,edept,ecity)
+   VALUES (p_eno,p_ename,p_ebdat,p_eage,p_edept,p_ecity);
+  END;
+/
+
+code :
+package Lab_work19_07;
+import java.sql.*;
+import java.util.Date;
+public class Callebal_satement {
+
+	public static void main(String[] args) {
+	
+		try
+		{
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			System.out.println("Driver loaded");
+			
+			String url="jdbc:oracle:thin:@localhost:1521:XE";
+			String user="system";
+			String pass="9924384635";
+			
+//		Class.forName("com.mysql.jdbc.Driver");
+//		System.out.println("Class/Driver Loaded");
+	//
+//		String url="jdbc:mysql://localhost:3306/hjd";
+//		String user="root";
+//		String pass="";
+		
+		Connection conn = DriverManager.getConnection(url,user,pass);
+		System.out.println("Conncetion Doned");
+		
+	
+		String SQLInsert ="{call insertEMP(?,?,?,?,?,?)}";
+	    CallableStatement cst=conn.prepareCall(SQLInsert);
+	    cst.setInt(1, 101);
+	    cst.setString(2, "MyBlog");
+     //   cst.setDate(3,getCurrentDate()); //If Add Current  Date
+	    cst.setDate(3, java.sql.Date.valueOf("1202-10-10"));
+	    cst.setInt(4, 19);
+	    cst.setString(5, "Devloper");
+	    cst.setString(6, "jamanger");
+	    cst.execute();
+		
+	    	    	
+	    
+	    Statement stmt =conn.createStatement();
+        String SQLSelect="select *from emp";
+	    ResultSet rs=stmt.executeQuery(SQLSelect);
+	 
+		System.out.println("Eno\tEname\t\t\tEbdat\t\tEage\tEdept\t\t\tEcity");
+		while(rs.next())
+		{
+			System.out.println(rs.getInt(1)+"\t"+rs.getString(2)+"\t"+rs.getDate(3)+"\t"+rs.getInt(4)+"\t"+rs.getString(5)+"\t"+rs.getString(6));
+		}
+
+		
+		stmt.close();
+	//	cst.close();
+		rs.close();
+		conn.close();
+		}
+		catch(Exception e)
+		{
+			System.out.println("Error : "+e.toString());
+		}
+	}
+
+	private static java.sql.Date getCurrentDate() {
+		   java.util.Date today = new java.util.Date();
+	        return new java.sql.Date(today.getTime());
+	}
+
+}
+
